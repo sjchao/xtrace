@@ -17,25 +17,25 @@ int main(int argc, char** argv) {
   if (ret != 0) {
     char msg[100];
     getErrmsg(msg);
-    printf("failed to attach to process %d\n\t%s\n", pid, msg);
+    printf("Failed to attach to process %d\n\t%s\n", pid, msg);
     return -1;
   }
-  printf("attach to process %d\n", pid);
+  printf("Attach to process %d\n", pid);
   ptrace(PTRACE_CONT, pid, NULL, NULL);
   int status;
   while (1) {
-    printf("wait process %d signal\n", pid);
+    printf("Wait process %d signal...\n", pid);
     waitpid(pid, &status, 0);
     if (WIFSTOPPED(status)) {
       siginfo_t siginfo;
       ptrace(PTRACE_GETSIGINFO, pid, NULL, &siginfo);
-      printf("receive signal\n\tsigno:%d pid:%d uid:%d\n", siginfo.si_signo, siginfo.si_pid, siginfo.si_uid);
+      printf("Receive signal\n\tsigno:%d pid:%d uid:%d\n", siginfo.si_signo, siginfo.si_pid, siginfo.si_uid);
       ptrace(PTRACE_CONT, pid, NULL, siginfo.si_signo);
       break;
     }
   }
   ptrace(PTRACE_DETACH, pid, NULL, NULL);
-  printf("detach from process %d\n", pid);
+  printf("Detach from process %d\n", pid);
   return 0;
 }
 
@@ -64,7 +64,7 @@ void getErrmsg(char* errmsg) {
       msg = "ESRCH: the specified process does not exist.";
       break;
     default:
-      msg = "unknown error";
+      msg = "Unknown error";
       break;
   }
   memcpy(errmsg, msg, strlen(msg));
