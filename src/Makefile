@@ -1,4 +1,6 @@
 CC=gcc
+RM=rm -f
+
 TARGET=xtrace
 
 $(TARGET): xtrace.c
